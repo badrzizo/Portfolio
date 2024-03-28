@@ -6,18 +6,20 @@ setCookie = (cName, cValue, expdays) => {
     document.cookie = cName+ "=" + cValue +";" + expires + "; path=/";//set the cookie
 }
 
-//this is the function to get a cookie
 getCookie = (cName) => {
     const name = cName + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);//decode the cookie
-    const ca = decodedCookie.split(';');//split the cookie into an array
-    let value;
-    //loop through the array to find the cookie
-    ca.forEach(val => {
-        val = val.trim();
-        if(val.indexOf(name)  === 0) value = val.substring(name.length);  
-    })
-    return value;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -29,13 +31,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector('#cookies').style.display = "none";
         //set a cookie to remember the user's choice
         setCookie('cookie', 'true', 30);
+        console.log(document.cookie);
     })
 
     //this script will check if the cookie is set
     cookieMessage = () => {
-        if(!getCookie('cookie')) 
+        const cookieValue = getCookie('cookie');
+        console.log(cookieValue);
+        if(getCookie('cookie') !== 'true') 
             document.querySelector('#cookies').style.display = "block";
     }
 
-    window.addEventListener('load', cookieMessage);
+    window.addEventListener('load', () => {
+        cookieMessage();
+    });
 });

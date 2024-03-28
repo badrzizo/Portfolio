@@ -129,6 +129,7 @@ justify-content: center;
     color: #fff;
     background-color: #363434;
     z-index: 1;
+    display: none;
 }
 
 .cookies{
